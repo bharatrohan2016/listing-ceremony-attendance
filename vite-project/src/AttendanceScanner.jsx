@@ -8,19 +8,28 @@ export default function AttendanceScanner() {
   const [attendanceList, setAttendanceList] = useState([]);
   const [error, setError] = useState(null);
 
+  const [flag, setFlag] = useState(false);
+
   // Load attendance list from localStorage on component mount
 
 
   const markAttendance = async (scanned) => {
     const [lcCode, name, organization] = scanned?.split(" - ") || [];
+
+    console.log(lcCode);
     if (!lcCode) {
       setError("Invalid QR code format. Expected format: LCCode - Name - Organization");
       return;
     }
+
+    setFlag(!flag);
+
     // Check if scanned value exists in your array
     if (attendanceList.findIndex(item => item.id === lcCode) === -1) {
+
       const newList = [...attendanceList, scanned];
-      setAttendanceList(newList);
+      setQrData(scanned);
+      // setAttendanceList(newList);
       localStorage.setItem("attendance_list", JSON.stringify(newList));
 
       // Update Firebase
@@ -57,7 +66,7 @@ export default function AttendanceScanner() {
     };
 
     fetchAttendance();
-  }, []);
+  }, [flag]);
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -67,7 +76,6 @@ export default function AttendanceScanner() {
         onResult={(result, error) => {
           if (!!result) {
             const scanned = result?.text;
-            setQrData(scanned);
             markAttendance(scanned);
           }
           if (!!error) {
@@ -83,6 +91,13 @@ export default function AttendanceScanner() {
           ✅ Scanned: {qrData}
         </div>
       )}
+      {
+        error && (
+          <div style={{ marginTop: "20px", fontSize: "18px", color: "red" }}>
+            ❌ {error}
+          </div>
+        )
+      }
 
       {attendanceList.length > 0 && (
         <div style={{ marginTop: "20px", textAlign: "left", margin: "20px auto" }}>
