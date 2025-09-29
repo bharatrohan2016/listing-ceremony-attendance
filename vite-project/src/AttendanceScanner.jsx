@@ -17,6 +17,7 @@ export default function AttendanceScanner() {
   const [message, setMessage] = useState("");
   const [messageColor, setMessageColor] = useState("blue");
   const [attendanceList, setAttendanceList] = useState([]);
+  const [error, setError] = useState(null);
 
   // 📡 Realtime listener: Fetch attendance list and auto-update UI
   useEffect(() => {
@@ -76,13 +77,13 @@ export default function AttendanceScanner() {
 
   return (
     <div style={{ textAlign: "center", padding: "20px" }}>
-      <h1>📋 Event Attendance Scanner</h1>
+      <h2>📋 Event Attendance Scanner</h2>
 
       {/* 🔍 QR Scanner */}
       <QrReader
         onResult={handleResult}
         constraints={{ facingMode: "environment" }}
-        style={{ width: "400px", margin: "0 auto" }}
+        style={{ width: "50%", margin: "0 auto" }}
       />
 
       {/* ✅ Scanned result */}
@@ -114,7 +115,7 @@ export default function AttendanceScanner() {
       )}
 
       {/* 📜 Attendance List */}
-      <h2 style={{ marginTop: "40px" }}>📋 Marked Attendance List</h2>
+      <h3 style={{ marginTop: "40px" }}>📋 Marked Attendance List</h3>
       {attendanceList.length === 0 ? (
         <p style={{ color: "gray" }}>No attendance marked yet.</p>
       ) : (

@@ -1,11 +1,12 @@
 
 import './App.css'
 import AttendanceScanner from './AttendanceScanner'
+import Header from './Header'
 
 function App() {
 return (
   <>
-  <h2>BharatRohan</h2>
+  <Header/>
   <AttendanceScanner />
   </>
 )
